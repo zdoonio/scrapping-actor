@@ -9,6 +9,7 @@ class Supervisor extends Actor {
   var maxRetries = 2
   var numberVisited = 0
   var globalNumberOfPages = 0
+  var globalUrl: URL = _
   var toScrap = Set.empty[URL]
   var scrapCounts = Map.empty[URL, Int]
   var host2Actor = Map.empty[String, ActorRef]
@@ -18,13 +19,21 @@ class Supervisor extends Actor {
       println(s"Starting scrapping from $url.")
       println(s"Number of pages to scrap: $numberOfPages")
       globalNumberOfPages = numberOfPages
+      globalUrl = url
+      scrap(url, globalNumberOfPages)
+
+    case Continue(url, numberOfPages) =>
+      println(s"Starting scrapping from $url.")
+      println(s"Number of pages to scrap: $numberOfPages")
       scrap(url, globalNumberOfPages)
 
     case ScrapFinished(url) =>
       println(s"Scraping finished $url")
+      self ! Continue(globalUrl, globalNumberOfPages - numberVisited)
 
-    case IndexFinished(url) =>
-      if (numberVisited < globalNumberOfPages)
+    case IndexFinished(url, content) =>
+      if (numberVisited == globalNumberOfPages)
+        println("Scrapping process finishing...")
         checkAndShutdown(url)
 
     case ScrapFailure(url, reason) =>
@@ -49,9 +58,10 @@ class Supervisor extends Actor {
       })
 
       numberVisited += 1
-      toScrap += url
-      countVisits(url)
-      actor ! Scrap(url)
+      val actualUrl = new URL(url.toString + s"?page=$numberVisited")
+      toScrap += actualUrl
+      countVisits(actualUrl)
+      actor ! Scrap(actualUrl)
     }
   }
 
