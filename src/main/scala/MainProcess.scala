@@ -11,7 +11,7 @@ object MainProcess extends App {
   val system = ActorSystem()
   val supervisor = system.actorOf(Props[Supervisor],"supervisor")
   val url = new URL("http://bash.org.pl/latest/")
-  println("Welcome in Scrapper Actor!!! please specify how many pages you wanna to scrap: ")
+  println("Welcome in Scrapper Actor!!! Please specify how many pages do you wanna to scrap: ")
   val numberOfPages = StdIn.readInt()
 
   supervisor ! Start(url, numberOfPages)
