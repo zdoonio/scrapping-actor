@@ -17,6 +17,8 @@ libraryDependencies ++= {
     "com.typesafe.akka" %% "akka-actor" % "2.5.13",
     "com.typesafe.akka" %% "akka-testkit" % "2.5.13" % Test,
     // Biblioteka do scrapowania zawrtości z stron HTML
-    "net.ruippeixotog" %% "scala-scraper" % "2.1.0"
+    "net.ruippeixotog" %% "scala-scraper" % "2.1.0",
+    // Biblioteka typesafe Play-Framework do obsługi JSON
+    "com.typesafe.play" %% "play-json" % "2.6.7"
   )
 }
