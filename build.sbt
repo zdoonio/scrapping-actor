@@ -19,6 +19,8 @@ libraryDependencies ++= {
     // Biblioteka do scrapowania zawrtości z stron HTML
     "net.ruippeixotog" %% "scala-scraper" % "2.1.0",
     // Biblioteka typesafe Play-Framework do obsługi JSON
-    "com.typesafe.play" %% "play-json" % "2.6.7"
+    "com.typesafe.play" %% "play-json" % "2.6.7",
+    // Biblioteka typesafe do tworzenia konfiguracji
+    "com.typesafe" % "config" % "1.3.2"
   )
 }

@@ -1,6 +1,6 @@
 import java.net.URL
-
 import akka.actor.{Actor, ActorRef}
+import com.typesafe.config.ConfigFactory
 import org.joda.time.DateTime
 
 class Indexer(supervisor: ActorRef) extends Actor {
@@ -17,7 +17,8 @@ class Indexer(supervisor: ActorRef) extends Actor {
   @throws[Exception](classOf[Exception])
   override def postStop(): Unit = {
     super.postStop()
-    val directory = "/Users/dominik/Desktop/"
+    val config = ConfigFactory.load()
+    val directory = config.getString("filePath")
 
     FileWriter.create(store.values.toList, directory + DateTime.now().toString("yyyy-MM-dd") + "-output.txt")
     println("Scrapping pages saved successful: Exit 0")
