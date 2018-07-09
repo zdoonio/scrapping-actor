@@ -4,6 +4,9 @@ import scala.concurrent.duration._
 import scala.concurrent.Await
 import scala.io.StdIn
 
+/**
+  * Główny proces
+  */
 object MainProcess extends App {
   val system = ActorSystem()
   val supervisor = system.actorOf(Props[Supervisor], "supervisor")

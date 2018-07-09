@@ -2,6 +2,9 @@ import java.net.URL
 
 import akka.actor.{Actor, ActorRef, ActorSystem, PoisonPill, Props}
 
+/**
+  * Klasa supervisora odpowiedzialna za kontrolowanie poszczególnych podrzędnych aktorów
+  */
 class Supervisor extends Actor {
   val indexer = context actorOf Props(new Indexer(self))
   val system = ActorSystem()
@@ -46,6 +49,12 @@ class Supervisor extends Actor {
         checkAndShutdown(url)
   }
 
+  /**
+    * Metoda scrapująca dane z url
+    *
+    * @param url              adres url
+    * @param numberOfPages    ilość pozostałych stron do zescrapowania
+    */
   def scrap(url: URL, numberOfPages: Int) = {
     println("Start to scrap")
     val host = url.getHost
@@ -65,8 +74,18 @@ class Supervisor extends Actor {
     }
   }
 
+  /**
+    * Metoda odpowiedzialna za liczenie wizyt na hoscie
+    *
+    * @param url    ścieżka url
+    */
   def countVisits(url: URL): Unit = scrapCounts += (url -> (scrapCounts.getOrElse(url, 0) + 1))
 
+  /**
+    * Metoda sprawdzająca czy należy przerwać proces supervisora jeżeli nie odejmuj adresy url do zescrapowania
+    *
+    * @param url    ścieżka url
+    */
   def checkAndShutdown(url: URL): Unit = {
     toScrap -= url
 

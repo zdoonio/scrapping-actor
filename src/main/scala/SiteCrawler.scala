@@ -8,6 +8,12 @@ import scala.concurrent.duration._
 import scala.language.postfixOps
 import scala.concurrent.ExecutionContext.Implicits.global
 
+/**
+  * Klasa obsługująca przechodzenie między stronami html na hoscie
+  *
+  * @param supervisor     aktor supervisora
+  * @param indexer        aktor indexera
+  */
 class SiteCrawler(supervisor: ActorRef, indexer: ActorRef) extends Actor {
   val process = "Process next url"
 

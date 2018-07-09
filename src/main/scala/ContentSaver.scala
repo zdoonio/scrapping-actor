@@ -5,6 +5,9 @@ import org.joda.time.DateTime
 import scala.concurrent.duration._
 import scala.concurrent.Await
 
+/**
+  * Klasa do zapisywania kontentu w pliku na dysku.
+  */
 class ContentSaver extends Actor {
 
   def receive: Receive = {
@@ -13,6 +16,11 @@ class ContentSaver extends Actor {
       saveContentToFile(posts)
   }
 
+  /**
+    * Funkcja zapisująca dane w postaci Json na dysku
+    *
+    * @param content  zescrapowane dane
+    */
   def saveContentToFile(content: List[Content]) = {
     val config = ConfigFactory.load()
     val directory = config.getString("filePath")

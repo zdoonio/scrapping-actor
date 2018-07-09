@@ -5,7 +5,11 @@ import net.ruippeixotog.scalascraper.browser.JsoupBrowser
 import net.ruippeixotog.scalascraper.dsl.DSL.Extract._
 import net.ruippeixotog.scalascraper.dsl.DSL._
 
-
+/**
+  * Klasa scrapująca dane z stron html
+  *
+  * @param indexer
+  */
 class Scraper(indexer: ActorRef) extends Actor {
 
   def receive: Receive = {
@@ -16,6 +20,12 @@ class Scraper(indexer: ActorRef) extends Actor {
       indexer ! Index(url, content)
   }
 
+  /**
+    * Metoda parsująca dane do postaci kontentu.
+    *
+    * @param url      ścieżka url
+    * @return         obiekt Content
+    */
   def parse(url: URL): Content = {
     val browser = JsoupBrowser()
     val doc = browser.get(url.toString)

@@ -1,5 +1,8 @@
 import play.api.libs.json.{JsValue, Json, Writes}
 
+/**
+  * Obiekt do mapowania danych do postaci JSON
+  */
 object JsonWriter {
 
   implicit val writes_format = Json.format[Post]
