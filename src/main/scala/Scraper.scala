@@ -14,10 +14,12 @@ class Scraper(indexer: ActorRef) extends Actor {
 
   def receive: Receive = {
     case Scrap(url) =>
+      val startCount = System.nanoTime()
       println(s"Scraping $url")
       val content = parse(url)
       sender() ! ScrapFinished(url)
-      indexer ! Index(url, content)
+      val elapsedTime = System.nanoTime() - startCount
+      indexer ! Index(url, content, elapsedTime)
   }
 
   /**
@@ -35,13 +37,15 @@ class Scraper(indexer: ActorRef) extends Actor {
     val postElements = doc >> elementList(".post")
 
     val posts =  postElements.map { post =>
+      val startCount = System.nanoTime()
       val idText = post >?> texts(".click")
       val id = idText.orNull.head.replace("#", "").toLong
       val pointsText = post >?> texts(".points")
       val points = pointsText.orNull.head.toLong
       val content = post >> texts(".post-content")
+      val elapsedTime = System.nanoTime() - startCount
 
-      Post(id, points, content.head)
+      Post(id, points, content.head, elapsedTime)
     }
 
     Content(title.head, meta.orNull.outerHtml.toString, posts)
