@@ -1,7 +1,8 @@
 import java.net.URL
-import akka.actor.{Actor, ActorRef}
+import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import com.typesafe.config.ConfigFactory
 import org.joda.time.DateTime
+
 import scala.concurrent.duration._
 import scala.concurrent.Await
 
@@ -19,14 +20,9 @@ class Indexer(supervisor: ActorRef) extends Actor {
   @throws[Exception](classOf[Exception])
   override def postStop(): Unit = {
     super.postStop()
-    val config = ConfigFactory.load()
-    val directory = config.getString("filePath")
-    val savingResult = Await.result(FileWriter.create(store.values.toList, directory + DateTime.now().toString("yyyy-MM-dd") + "-output.txt"), 10 seconds)
+    val system = ActorSystem()
+    val contentSaver = system.actorOf(Props[ContentSaver], "contentSaver")
 
-    if(savingResult.isEmpty)
-      println("Scraped content saved successful: Exit 0")
-    else
-      println("Some problems with saving file. Exit 0")
-
+    contentSaver ! ContentToSave(store.values.toList)
   }
 }
