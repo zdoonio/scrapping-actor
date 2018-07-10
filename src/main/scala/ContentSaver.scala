@@ -11,9 +11,9 @@ import scala.concurrent.Await
 class ContentSaver extends Actor {
 
   def receive: Receive = {
-    case ContentToSave(posts) =>
+    case ContentToSave(contents) =>
       println(s"Starting saving process...")
-      saveContentToFile(posts)
+      saveContentToFile(contents)
   }
 
   /**

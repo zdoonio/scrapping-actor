@@ -15,12 +15,14 @@ libraryDependencies ++= {
   Seq(
     // Biblioteka typesafe actor dla Scali
     "com.typesafe.akka" %% "akka-actor" % "2.5.13",
-    "com.typesafe.akka" %% "akka-testkit" % "2.5.13" % Test,
     // Biblioteka do scrapowania zawrtości z stron HTML
     "net.ruippeixotog" %% "scala-scraper" % "2.1.0",
     // Biblioteka typesafe Play-Framework do obsługi JSON
     "com.typesafe.play" %% "play-json" % "2.6.7",
     // Biblioteka typesafe do tworzenia konfiguracji
-    "com.typesafe" % "config" % "1.3.2"
+    "com.typesafe" % "config" % "1.3.2",
+    // Testy do akka actor
+    "com.typesafe.akka" %% "akka-testkit" % "2.5.13" % Test,
+    "org.scalatest" %% "scalatest" % "3.0.5" % "test"
   )
 }
